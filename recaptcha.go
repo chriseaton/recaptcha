@@ -71,11 +71,11 @@ func VerifyRequest(r *http.Request, secret string) (*Response, error) {
 //Verify a ReCaptcha challenge.
 func Verify(c *Challenge) (*Response, error) {
 	if c == nil {
-		return nil, fmt.Errorf("The Request object argument must be specified.")
+		return nil, fmt.Errorf("The challenge object argument must be specified.")
 	} else if c.Secret == "" {
-		return nil, fmt.Errorf("Your site's ReCaptcha secret must be non-empty (recaptcha.Secret).")
+		return nil, fmt.Errorf("Your site's challenge secret must be non-empty.")
 	} else if c.FormValue == "" {
-		return nil, fmt.Errorf("The Challenge response (FormValue) must be non-empty (recaptcha.Challenge.FormValue).")
+		return nil, fmt.Errorf("The ReCaptcha response form value must be non-empty.")
 	}
 	var client *http.Client
 	var rr = &Response{}

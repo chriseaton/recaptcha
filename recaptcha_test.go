@@ -26,8 +26,7 @@ var (
 func TestMain(m *testing.M) {
 	file, err := os.Open("recaptcha_test.data")
 	if err != nil {
-		fmt.Sprint("Unable to load test data file.")
-		os.Exit(1)
+		os.Exit(5)
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -50,8 +49,7 @@ func TestMain(m *testing.M) {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		fmt.Sprintf("Failed reading through data: %s", err)
-		os.Exit(1)
+		os.Exit(10)
 	}
 	os.Exit(m.Run())
 }

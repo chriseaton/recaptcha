@@ -6,52 +6,61 @@
 package recaptcha
 
 import (
+	"bufio"
 	"fmt"
-	"github.com/joho/godotenv"
 	"net"
 	"net/http"
 	"os"
 	"testing"
-	"time"
 )
 
-//To test, it's recommended to create a .env file using Google's automated testing secret value, which is
-//available here: https://developers.google.com/recaptcha/docs/faq
-//
-//Sample .env file:
-//GOOGLE_RECAPTCHA_TEST_KEY={ReCaptcha Site Key}
-//GOOGLE_RECAPTCHA_TEST_SECRET={ReCaptcha Secret}
-//GOOGLE_RECAPTCHA_TEST_RESPONSE={Any valid or invalid response value, depending on what you want to test}
+//These vars are loaded from the recaptcha_test.data file. Populated using Google's automated testing values
+//which are available here: https://developers.google.com/recaptcha/docs/faq
+var (
+	testSiteKey  string
+	testSecret   string
+	testResponse string
+)
 
-//Returns the key specified as an environmental variable (or loaded from a .env file, see above), or if not found
-//uses Google's public key for automated testing.
-func getTestKey() string {
-	key := os.Getenv("GOOGLE_RECAPTCHA_TEST_KEY")
-	if key == "" {
-		key = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" //Google's public key for automated testing.
+//load the test data
+func TestMain(m *testing.M) {
+	file, err := os.Open("recaptcha_test.data")
+	if err != nil {
+		fmt.Sprint("Unable to load test data file.")
+		os.Exit(1)
 	}
-	return key
-}
-
-//Returns the secret specified as an environmental variable (or loaded from a .env file, see above), or if not found
-//uses Google's public secret for automated testing.
-func getTestSecret() string {
-	secret := os.Getenv("GOOGLE_RECAPTCHA_TEST_SECRET")
-	if secret == "" {
-		secret = "6LeIxAcTAAAAAGG-vFI1TnRWxMZNFuojJ4WifJWe" //Google's public secret for automated testing.
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	var index int
+	for scanner.Scan() {
+		line := scanner.Text()
+		if len(line) > 0 && line[0] != '#' {
+			switch index {
+			case 0:
+				testSiteKey = line
+			case 1:
+				testSecret = line
+			case 2:
+				testResponse = line
+			}
+			index++
+			if index > 2 {
+				break
+			}
+		}
 	}
-	return secret
+	if err := scanner.Err(); err != nil {
+		fmt.Sprintf("Failed reading through data: %s", err)
+		os.Exit(1)
+	}
+	os.Exit(m.Run())
 }
 
 //Test the http call using Google's testing secret
 func TestVerify(t *testing.T) {
-	err := godotenv.Load()
-	if err != nil {
-		t.Skip("No .env file for loading test variables. Skipping...")
-	}
 	c := &Challenge{
-		Secret:    getTestSecret(),
-		FormValue: os.Getenv("GOOGLE_RECAPTCHA_TEST_RESPONSE"),
+		Secret:    testSecret,
+		FormValue: testResponse,
 	}
 	t.Logf("Sending challenge: %+v", c)
 	res, err := Verify(c)
@@ -63,12 +72,7 @@ func TestVerify(t *testing.T) {
 }
 
 func TestVerifyRequest(t *testing.T) {
-	s := &http.Server{
-		Addr:         ":8080",
-		Handler:      nil,
-		ReadTimeout:  10 * time.Second,
-		WriteTimeout: 10 * time.Second,
-	}
+	s := &http.Server{}
 	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		t.Errorf("Failed to start web server for testing, error: %s", err)
@@ -83,10 +87,10 @@ func TestVerifyRequest(t *testing.T) {
 						<input type="submit" value="Send Test">
 					</form>
 				</body>
-			</html>`, getTestKey())
+			</html>`, testSiteKey)
 	})
 	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
-		res, err := VerifyRequest(r, getTestSecret())
+		res, err := VerifyRequest(r, testSecret)
 		if err != nil {
 			t.Error(err)
 		} else {
@@ -95,5 +99,6 @@ func TestVerifyRequest(t *testing.T) {
 		//close the webserver
 		l.Close()
 	})
+	t.Logf("Started test webserver.")
 	s.Serve(l)
 }

@@ -39,6 +39,6 @@ func main() {
 	http.HandleFunc("/verify", verify)
 	err := http.ListenAndServe(":8080", nil)
 	if err != nil {
-		fmt.Sprintf("Failed to start web server: ", err)
+		fmt.Sprintf("Failed to start web server: %s", err)
 	}
 }

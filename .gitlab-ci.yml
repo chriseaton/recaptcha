@@ -17,6 +17,8 @@ compile-go-1.4:
   script:
     - git submodule update --init
     - (go build recaptcha.go;  if [ $? -ne 0 ]; then exit 66; fi);
+    #make examples compilable
+    - go get google.golang.org/appengine
     - mkdir -p src/gitlab.com/chriseaton/
     - ln -s $(pwd) src/gitlab.com/chriseaton/recaptcha
     - (for f in examples/*.go; do echo "-> go build $f"; go build $f; if [ $? -ne 0 ]; then exit 66; fi; done);
@@ -27,6 +29,8 @@ compile-go-1.5:
   script:
     - git submodule update --init
     - (go build recaptcha.go;  if [ $? -ne 0 ]; then exit 66; fi);
+    #make examples compilable
+    - go get google.golang.org/appengine
     - mkdir -p src/gitlab.com/chriseaton/
     - ln -s $(pwd) src/gitlab.com/chriseaton/recaptcha
     - (for f in examples/*.go; do echo "-> go build $f";  go build $f; if [ $? -ne 0 ]; then exit 66; fi; done);

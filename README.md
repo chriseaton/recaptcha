@@ -4,6 +4,17 @@
 supporting the latest v2 API. It supports simple verification by a single function call, or can be used with Google
 AppEngine by replacing the http client with AppEngine's urlfetch client.
 
+### Getting Started
+
+In your console:
+````
+go get gitlab.com/chriseaton/recaptcha
+````
+In your go file:
+````
+import "gitlab.com/chriseaton/recaptcha"
+````
+
 ### Examples
 **Basic Usage**
 ````

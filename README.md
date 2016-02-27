@@ -4,6 +4,8 @@
 supporting the latest v2 API. It supports simple verification by a single function call, or can be used with Google
 AppEngine by replacing the http client with AppEngine's urlfetch client.
 
+Report issues [here](https://gitlab.com/chriseaton/recaptcha/issues).
+
 ### Getting Started
 
 In your console:

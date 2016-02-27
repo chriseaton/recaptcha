@@ -7,8 +7,8 @@
 package main
 
 import (
-	"gitlab.com/chriseaton/recaptcha"
 	"fmt"
+	"gitlab.com/chriseaton/recaptcha"
 	"net/http"
 )
 

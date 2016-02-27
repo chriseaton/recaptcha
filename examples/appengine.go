@@ -7,10 +7,10 @@
 package main
 
 import (
+	"fmt"
 	"gitlab.com/chriseaton/recaptcha"
 	"google.golang.org/appengine"
-    "google.golang.org/appengine/urlfetch"
-	"fmt"
+	"google.golang.org/appengine/urlfetch"
 	"net/http"
 )
 
@@ -18,8 +18,8 @@ func verify(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	ctx := appengine.NewContext(r)
 	c := &recaptcha.Challenge{
-		Secret: "{MY_SECRET_HERE}",
-		FormValue: r.FormValue("g-recaptcha-response")
+		Secret:     "{MY_SECRET_HERE}",
+		FormValue:  r.FormValue("g-recaptcha-response"),
 		HttpClient: urlfetch.Client(ctx),
 	}
 	res, err := recaptcha.Verify(c)

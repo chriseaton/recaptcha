@@ -4,7 +4,7 @@
  * This source code is subject to the terms of the MIT License.
  *************************************************************/
 
-package main
+package myapp
 
 import (
 	"fmt"
@@ -43,11 +43,7 @@ func index(w http.ResponseWriter, r *http.Request) {
 			</html>`, "{MY_SITE_KEY}")
 }
 
-func main() {
+func init() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/verify", verify)
-	err := http.ListenAndServe(":8080", nil)
-	if err != nil {
-		fmt.Sprintf("Failed to start web server: %s", err)
-	}
 }

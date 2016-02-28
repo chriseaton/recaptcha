@@ -10,6 +10,7 @@ vet:
   script:
     - go tool vet -composites=false -unusedresult=false ./*.go
     - go tool vet -composites=false -unusedresult=false examples/*.go
+    - go tool vet -composites=false -unusedresult=false examples/appengine*.go
 
 compile-go-1.4:
   image: golang:1.4

@@ -1,6 +1,6 @@
 /**************************************************************
  * Copyright (c) 2016 Christopher Eaton
- * https://gitlab.com/chriseaton
+ * https://github.com/chriseaton
  * This source code is subject to the terms of the MIT License.
  *************************************************************/
 
@@ -8,7 +8,7 @@ package myapp
 
 import (
 	"fmt"
-	"gitlab.com/chriseaton/recaptcha"
+	"github.com/chriseaton/recaptcha"
 	"google.golang.org/appengine"
 	"google.golang.org/appengine/urlfetch"
 	"net/http"

@@ -1,20 +1,21 @@
-# [recaptcha](https://gitlab.com/chriseaton/recaptcha)
+![recaptcha - for go](recaptcha.png)
+# [recaptcha](https://github.com/chriseaton/recaptcha)
 
-[recaptcha](https://gitlab.com/chriseaton/recaptcha) is an easy to use Google ReCaptcha library written in Go, 
+[recaptcha](https://github.com/chriseaton/recaptcha) is an easy to use Google ReCaptcha library written in Go,
 supporting the latest v2 API. It supports simple verification by a single function call, or can be used with Google
 AppEngine by replacing the http client with AppEngine's urlfetch client.
 
-Report issues [here](https://gitlab.com/chriseaton/recaptcha/issues).
+Report issues [here](https://github.com/chriseaton/recaptcha/issues).
 
 ### Getting Started
 
 In your console:
 ````
-go get gitlab.com/chriseaton/recaptcha
+go get github.com/chriseaton/recaptcha
 ````
 In your go file:
 ````
-import "gitlab.com/chriseaton/recaptcha"
+import "github.com/chriseaton/recaptcha"
 ````
 
 ### Examples
